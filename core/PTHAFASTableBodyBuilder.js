@@ -348,7 +348,7 @@ class PTHAFASTableBodyBuilder {
   }
 
   getDirectionCell(direction) {
-    let truncatePosition = 26;
+    let truncatePosition = 32;
     let content = this.getProcessedDirection(direction);
     let className = "pthDirectionCell";
 

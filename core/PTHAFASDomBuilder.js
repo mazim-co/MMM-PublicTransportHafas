@@ -6,7 +6,7 @@ class PTHAFASDomBuilder {
 
     this.headingSymbols = {
       time: "fa fa-clock-o",
-      line: "fa fa-bus",
+      line: "fa fa-subway",
       direction: "fa fa-exchange",
       platform: "fa fa-map-marker"
     };
