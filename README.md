@@ -43,20 +43,14 @@ For more information see the [Configuration](#configuration) section.
 
 ![Example: Multiple instances in Berlin, showing the last update time](img/UpdateTimeDisplayed.png)<br>_Several instances in Berlin, showing the last update time_
 
-## Preconditions
-
-- MagicMirror² instance
-- Node.js version >= 10
-- npm
-
 ## Installing
 
-Just clone the module into your MagicMirror modules folder and execute `npm install` in the module’s directory:
+Just clone the module into your MagicMirror modules folder and execute `npm ci` in the module’s directory:
 
 ```bash
-git clone https://github.com/KristjanESPERANTO/MMM-PublicTransportHafas.git
+git clone https://github.com/KristjanESPERANTO/MMM-PublicTransportHafas
 cd MMM-PublicTransportHafas
-npm install
+npm ci
 ```
 
 ## Updating
@@ -65,7 +59,7 @@ Go to the module’s folder inside MagicMirror modules folder and pull the lates
 
 ```bash
 git pull
-npm install
+npm ci
 ```
 
 ## How to get the `stationID`
@@ -189,8 +183,6 @@ You can even use the same `stationID` in different instances. So you can display
 If you set `showColoredLineSymbols` to `true` the module will try to colorize the line symbols. This is done by appending a css class to the line symbol. This class is named after the line name but blanks are left out and all letters are lower case. So if the line name is “STR 11” the appended css class name is `.str11`.
 
 To provide your own classes create a css file in the `css` directory of the module. It must be named like `<your custom name>-lines.css`, where `<your custom name>` can be any valid file name but should not contain blanks or dots. The part `<your custom name>` is then used in the config file as value for the `customLineStyles` property.
-
-#### Example
 
 In the example above “leipzig” is used as value for the `customLineStyles` property. Therefore there must be a file named `leipzig-lines.css` inside the `css` folder. If this is not the case the module won’t be started and it will not be visible. The browser’s console will show an error.
 

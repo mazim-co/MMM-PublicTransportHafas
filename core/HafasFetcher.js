@@ -23,7 +23,7 @@ module.exports = class HafasFetcher {
    *        }
    */
   constructor(config) {
-    this.leadTime = 40; // minutes
+    this.leadTime = 20; // minutes
     this.config = config;
     const profile = require("hafas-client/p/" + this.config.hafasProfile);
     this.hafasClient = createClient(
@@ -156,21 +156,42 @@ module.exports = class HafasFetcher {
   }
 
   departuresRemovedSurplusUnreachableDepartures(departures) {
-    let unreachableDeparturesCount = departures.filter(
+    // Get all unreachable departures
+    let unreachableDepartures = departures.filter(
       (departure) => !departure.isReachable
-    ).length;
-    let result = departures;
+    );
 
-    if (unreachableDeparturesCount > this.config.maxUnreachableDepartures) {
-      let toBeRemoved =
-        unreachableDeparturesCount - this.config.maxUnreachableDepartures;
+    // Adjust lead time for next request
+    this.adjustLeadTime(unreachableDepartures);
 
-      for (let i = 0; i < toBeRemoved; i++) {
-        result.shift();
-      }
-    }
+    // Remove surplus unreachable departures
+    unreachableDepartures = unreachableDepartures.slice(
+      -this.config.maxUnreachableDepartures
+    );
+
+    // Get all reachable departures
+    let reachableDepartures = departures.filter(
+      (departure) => departure.isReachable
+    );
+
+    // Merge unreachable and reachable departures
+    let result = [].concat(unreachableDepartures, reachableDepartures);
 
     return result;
+  }
+
+  adjustLeadTime(unreachableDepartures) {
+    /**
+     * This method dynamically adjusts the lead time. This is only relevant if
+     * 'this.config.maxUnreachableDepartures' is greater than 0. The dynamic
+     * adjustment is useful because there are stops where are many departures
+     * in the lead time and some where are very few.
+     */
+    if (unreachableDepartures.length > this.config.maxUnreachableDepartures) {
+      this.leadTime = Math.round(this.leadTime / 2) + 1;
+    } else if (this.leadTime <= 45) {
+      this.leadTime = this.leadTime + 5;
+    }
   }
 
   isReachable(departure) {
